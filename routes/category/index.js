@@ -12,6 +12,6 @@ router.get('/allcategory', categoryContoller.getAllCategory);
 
 router.get('/:id', categoryContoller.getCategoryById);
 
-
+router.put('/:id', categoryContoller.updateCategory);
 
 module.exports=router;

@@ -82,3 +82,28 @@ module.exports.getCategoryById= async function(req, res){
         })
     }
 }
+
+//function to update the category
+module.exports.updateCategory=async function(req, res){
+     const category= await Category.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        icon: req.body.icon,
+        color: req.body.color
+
+     },{
+        new: true
+     })
+
+    if(category){
+        res.status(200).json({
+            success:true,
+            message: 'Category Updated',
+            category
+        })
+    }else{
+        res.status(500).json({
+            success: false,
+            message: 'Cannot Update the Category'
+        })
+    }
+}
