@@ -1,5 +1,7 @@
 const Category=require('../models/category_Schema');
 
+
+//function to post new category 
 module.exports.addCategory=async function(req, res){
 
     let category= new Category({
@@ -21,7 +23,7 @@ module.exports.addCategory=async function(req, res){
   
 }
 
-
+// function to delete the category with id
 module.exports.deleteCategory= function(req, res){
     Category.findByIdAndRemove(req.params.id).then(category=>{
         if(category){
@@ -41,4 +43,42 @@ module.exports.deleteCategory= function(req, res){
             error
         })
     })
+}
+
+//function to get all the categiry
+module.exports.getAllCategory=async function(req, res){
+        const categoryList= await Category.find();
+
+        if(categoryList){
+            res.status(200).json({
+                success:true,
+                message: 'List of category :',
+                categoryList
+            })
+        }else{
+            res.status(500).json({
+                success: false,
+                message: 'No Category'
+            })
+        }
+
+}
+
+
+//function to get category by Id
+module.exports.getCategoryById= async function(req, res){
+    const category= await Category.findById(req.params.id);
+
+    if(category){
+        res.status(200).json({
+            success:true,
+            message: 'Category :',
+            category
+        })
+    }else{
+        res.status(500).json({
+            success: false,
+            message: 'No Category found with the requested Id'
+        })
+    }
 }
