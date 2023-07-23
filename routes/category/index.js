@@ -2,7 +2,6 @@ const express=require('express');
 const router=express.Router();
 
 const categoryContoller=require('../../controllers/categoryController');
-const { route } = require('../user');
 
 router.post('/add', categoryContoller.addCategory);
 
