@@ -51,7 +51,12 @@ module.exports.addProducts=async function(req, res){
 module.exports.getAllProducts=async function(req, res){
 
   try {
-    const products=await Product.find();
+
+    let filter={};
+    if(req.query.category){
+        filter={category:req.query.category.split(',')};
+    }
+    const products=await Product.find(filter).populate('category');
     if(products){
         return res.status(200).send({
             message: 'List Of Products',
