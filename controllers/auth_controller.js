@@ -1,5 +1,6 @@
 const User = require("../models/users_Schema");
 const bcrypt = require("bcryptjs");
+const jwt=require('jsonwebtoken');
 module.exports.registerUser = async function (req, res) {
   try {
     let user = new User({
@@ -92,11 +93,20 @@ module.exports.login=async function (req, res) {
         if(user){
 
             if(user && bcrypt.compareSync(req.body.password, user.passwordHash)){
+
+              const token= jwt.sign(
+                {userId:user.id,
+                   isAdmin:user.isAdmin 
+                }, 
+                'test123', { expiresIn: '1d'});
+                  
                 res.status(200).json({
                     success: true,
                     message: "User Authenticated",
-                    user,
-                  });
+                    username:user.name,
+                    email: user.email,
+                    token: token
+                  })
             }else{
                 res.status(200).json({
                     success: false,
