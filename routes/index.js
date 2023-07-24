@@ -1,14 +1,13 @@
 const express=require('express');
 const router=express.Router();
 
-const adminContoller=require('../controllers/admin_controller');
-
 
 router.use('/user', require('./user'));
 
 router.use('/category', require('./category'));
 
-router.use('/product', require('./product'));
+router.use('/product', require('./products'));
 
+router.use('/order', require('./order'));
 
 module.exports=router;

@@ -11,4 +11,5 @@ router.get('/:id', authContoller.getUserById);
 
 router.post('/login', authContoller.login);
 
+
 module.exports=router;
