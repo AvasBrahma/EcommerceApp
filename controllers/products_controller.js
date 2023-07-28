@@ -51,15 +51,22 @@ module.exports.addProducts=async function(req, res){
 module.exports.getAllProducts=async function(req, res){
 
   try {
-
+    const search=req.query.search||"";
     let filter={};
-    if(req.query.category){
-        filter={category:req.query.category.split(',')};
-    }
-    const products=await Product.find(filter).populate('category');
+    if (req.query.category) {
+        filter.name = { $in: req.query.category.split(",") };
+      }
+  console.log(filter);
+    const products=await Product.find({ name: { $regex: search, $options: "i" } }).populate({
+          path: 'category',
+          match: filter,
+    });
+
+    const totalProducts = products.length;
     if(products){
         return res.status(200).send({
             message: 'List Of Products',
+            TotalProducts: totalProducts,
             products
         })
     }else{
@@ -235,3 +242,39 @@ module.exports.deleteProduct= function(req, res){
    
 
 }
+
+
+
+// //Functions to search Products
+// module.exports.searchProducts=async function(req, res){
+
+//     try {
+        
+//         const page=parseInt(req.query.page)-1||0;
+//         const limit=parseInt(req.query.limit)||5;
+//         const search=req.query.search||"";
+//         let category=req.query.category||"All";
+
+//         category=="All"
+
+//       const products=await Product.find({name:{
+//         $regex:search, $options:"i"
+//       }});
+//       if(products){
+//           return res.status(200).send({
+//               message: 'Product Requested',
+//               products
+//           })
+//       }else{
+//           return res.status(500).send({
+//               message: 'No Product Found....',
+//           })
+//       }
+//     } catch (error) {
+//       return res.status(400).send({ 
+//           message: 'Error : No able to find the product',
+//           error: error
+//       });
+//     }
+  
+   
